@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Yassin Review Content Lock",
+  "description": "Written by Yassin_PFE_05_Review_V3 when the science is sound. Freezes the scientific content and references of V3. Read by the authorship loop (Steps 6-9), which may change wording/style but must preserve every locked element exactly.",
+  "type": "object",
+  "required": ["locked", "locked_version", "editable_scope", "frozen_scope"],
+  "properties": {
+    "locked": { "type": "boolean" },
+    "locked_version": { "type": "string", "description": "e.g. V3" },
+    "locked_at": { "type": "string" },
+    "project_code": { "type": "string" },
+    "editable_scope": {
+      "type": "array",
+      "description": "What Steps 6-9 MAY change.",
+      "items": { "type": "string" },
+      "default": ["surface wording", "sentence structure", "clarity", "cohesion and flow", "paragraph organisation", "style and register"]
+    },
+    "frozen_scope": {
+      "type": "array",
+      "description": "What Steps 6-9 must NOT change.",
+      "items": { "type": "string" },
+      "default": ["scientific claims and conclusions", "numerical results and statistics", "effect estimates and confidence intervals", "PRISMA counts", "table data (A-I)", "citations and the reference list", "synthesis findings", "risk-of-bias and certainty judgments"]
+    },
+    "frozen_claims": {
+      "type": "array",
+      "description": "Enumerated locked claims with their V3 location, so downstream edits can be checked.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "claim_id": { "type": "string" },
+          "statement": { "type": "string" },
+          "location": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "frozen_reference_list": {
+      "type": "array",
+      "description": "The exact locked references, so a later step can confirm none was added, removed, or altered.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "ref_id": { "type": "string" },
+          "citation": { "type": "string" },
+          "identifier": { "type": "string", "description": "DOI/PMID if available" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "reference_count": { "type": "integer" },
+    "preservation_rule": {
+      "type": "string",
+      "default": "Steps 6-9 may change how the text reads, never what it claims or cites. Any change to a frozen element is a lock violation and must be rejected."
+    },
+    "outstanding_author_inputs": {
+      "type": "array",
+      "description": "Markers still pending at lock time (only permissible for non-blocking, non-Critical/Major items).",
+      "items": {
+        "type": "object",
+        "properties": {
+          "marker": { "type": "string" },
+          "location": { "type": "string" },
+          "required_input": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "blocking_set": {
+      "type": "array",
+      "description": "Populated only when locked = false: the Critical/Major items preventing lock.",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": true
+}

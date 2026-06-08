@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Yassin_PFE_04_CA_2 Deep Appraisal Register",
+  "description": "Verification log over the V2 closure map plus the merged issue list (reopened + new + residual) that Yassin_PFE_05_Review_V3 must close, with a lock-readiness judgment.",
+  "type": "object",
+  "required": ["metadata", "scope", "verification", "issues", "global_verdict", "lock_readiness", "handoff_contract"],
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "required": ["pipeline_step", "appraises_version", "feeds_version", "consumes", "language"],
+      "properties": {
+        "pipeline_step": { "const": "Yassin_PFE_04_CA_2" },
+        "appraises_version": { "const": "V2" },
+        "feeds_version": { "const": "V3" },
+        "consumes": { "type": "array", "items": { "type": "string" } },
+        "review_type": { "type": "string" },
+        "language": { "type": "string", "enum": ["English", "French", "Bilingual"] }
+      },
+      "additionalProperties": true
+    },
+    "scope": {
+      "type": "object",
+      "properties": {
+        "inputs_available": { "type": "array", "items": { "type": "string" } },
+        "limited_dimensions": { "type": "array", "items": { "type": "string" } },
+        "limitation_note": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "verification": {
+      "type": "array",
+      "description": "One entry per CA_1 issue.",
+      "items": {
+        "type": "object",
+        "required": ["ca1_issue_id", "concern_code", "severity", "claimed_status", "verification_verdict", "finding"],
+        "properties": {
+          "ca1_issue_id": { "type": "string" },
+          "concern_code": { "type": "string" },
+          "severity": { "type": "string", "enum": ["Critical", "Major", "Minor", "Observation"] },
+          "claimed_status": { "type": "string", "enum": ["closed", "partially_closed", "cannot_close_yet"] },
+          "verification_verdict": {
+            "type": "string",
+            "enum": ["verified_closed", "partially_verified", "not_closed", "blocked_author_input", "unable_to_verify"]
+          },
+          "checked_location": { "type": "array", "items": { "type": "string" } },
+          "finding": { "type": "string" },
+          "becomes_reopened_issue_id": { "type": "string", "description": "Set when the verdict generates a reopened issue" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "issues": {
+      "type": "array",
+      "description": "Merged actionable list for V3: reopened + new + residual.",
+      "items": {
+        "type": "object",
+        "required": ["id", "provenance", "concern_code", "severity", "location", "finding", "required_action_v3", "needs_new_search"],
+        "properties": {
+          "id": { "type": "string", "description": "e.g. CA2-001" },
+          "provenance": { "type": "string", "enum": ["reopened", "new", "residual"] },
+          "reopened_from": { "type": "string", "description": "CA_1 issue id when provenance = reopened" },
+          "concern_code": {
+            "type": "string",
+            "enum": ["QUES", "FRAM", "PRISMA", "STRUCT", "SRCH", "TRIA", "ELIG", "CIT", "EXTR", "METHCOMP", "HETERO", "ROB", "SYNTH", "CERT", "INTERP", "GAP", "ORIG", "PFE", "FEAS", "ETH", "CTX", "JTGT"]
+          },
+          "secondary_codes": { "type": "array", "items": { "type": "string" } },
+          "severity": { "type": "string", "enum": ["Critical", "Major", "Minor", "Observation"] },
+          "location": { "type": "array", "items": { "type": "string" } },
+          "finding": { "type": "string" },
+          "evidence_snippet": { "type": "string" },
+          "required_action_v3": { "type": "string" },
+          "needs_new_search": { "type": "boolean" },
+          "suggested_query_types": {
+            "type": "array",
+            "items": { "type": "string", "enum": ["reconnaissance", "framework", "existing_review", "recent", "high_specificity", "population", "instrument", "gap", "seminal", "regional", "contradictory", "citation_chaining"] }
+          },
+          "is_prohibited_shortcut": { "type": "boolean" },
+          "closure_status": { "type": "string", "enum": ["open"] }
+        },
+        "additionalProperties": true
+      }
+    },
+    "global_verdict": {
+      "type": "string",
+      "enum": ["Sound, minor revision only", "Revisable - Major revision required", "Not yet a valid review - Critical revision required", "Provisional - appraisal limited by missing inputs"]
+    },
+    "lock_readiness": {
+      "type": "object",
+      "required": ["ready_to_lock"],
+      "properties": {
+        "ready_to_lock": { "type": "boolean" },
+        "blocking_items": { "type": "array", "items": { "type": "string" }, "description": "issue ids and/or blocked_author_input items that block lock" },
+        "rationale": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "handoff_contract": {
+      "type": "object",
+      "required": ["v3_obligations"],
+      "properties": {
+        "v3_obligations": { "type": "array", "items": { "type": "string" } },
+        "must_close_severities": { "type": "array", "items": { "type": "string" }, "default": ["Critical", "Major"] }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

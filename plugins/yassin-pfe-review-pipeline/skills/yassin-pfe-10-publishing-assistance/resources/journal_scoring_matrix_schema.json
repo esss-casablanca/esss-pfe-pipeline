@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Yassin_PFE_10_Publishing_Assistance Journal Scoring Matrix",
+  "description": "Machine-readable record of the three-journal selection. Each journal scored 1-5 on the six standard criteria, with sources cited. Scope/fit and ethics are gates.",
+  "type": "object",
+  "required": ["metadata", "candidates_considered", "finalists", "ranking_rationale"],
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "required": ["pipeline_step", "prepares_version"],
+      "properties": {
+        "pipeline_step": { "const": "Yassin_PFE_10_Publishing_Assistance" },
+        "prepares_version": { "const": "V5" },
+        "review_type": { "type": "string" },
+        "field": { "type": "string" },
+        "search_performed_live": { "type": "boolean" }
+      },
+      "additionalProperties": true
+    },
+    "candidates_considered": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "The wider pool before narrowing to three."
+    },
+    "finalists": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "required": ["journal_name", "scores", "weighted_total", "recommended_role", "passes_gates"],
+        "properties": {
+          "journal_name": { "type": "string" },
+          "publisher": { "type": "string" },
+          "scores": {
+            "type": "object",
+            "required": ["scope_fit", "indexing", "apc_open_access", "timeline", "impact_quartile", "ethics_legitimacy"],
+            "properties": {
+              "scope_fit": { "type": "integer", "minimum": 1, "maximum": 5 },
+              "indexing": { "type": "integer", "minimum": 1, "maximum": 5 },
+              "apc_open_access": { "type": "integer", "minimum": 1, "maximum": 5 },
+              "timeline": { "type": "integer", "minimum": 1, "maximum": 5 },
+              "impact_quartile": { "type": "integer", "minimum": 1, "maximum": 5 },
+              "ethics_legitimacy": { "type": "integer", "minimum": 1, "maximum": 5 }
+            },
+            "additionalProperties": false
+          },
+          "evidence": {
+            "type": "object",
+            "description": "Cited facts behind the scores.",
+            "properties": {
+              "scope_note": { "type": "string" },
+              "indexed_in": { "type": "array", "items": { "type": "string" } },
+              "apc": { "type": "string" },
+              "open_access_model": { "type": "string" },
+              "typical_time_to_decision": { "type": "string" },
+              "impact_factor": { "type": "string" },
+              "quartile": { "type": "string" },
+              "cope_or_equivalent": { "type": "boolean" },
+              "sources": { "type": "array", "items": { "type": "string" } }
+            },
+            "additionalProperties": true
+          },
+          "weighted_total": { "type": "number" },
+          "recommended_role": {
+            "type": "string",
+            "enum": ["ambitious target", "core fit", "safer/faster option"]
+          },
+          "passes_gates": { "type": "boolean", "description": "false if scope/fit or ethics failed" },
+          "formatting_risk_note": { "type": "string", "description": "e.g. word limit may conflict with locked content" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "ranking_rationale": { "type": "string" }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Yassin_PFE_02_CA_1 Initial Critical Appraisal Issue Register",
+  "type": "object",
+  "required": [
+    "metadata",
+    "scope",
+    "global_verdict",
+    "issues",
+    "handoff_contract"
+  ],
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "required": ["pipeline_step", "appraises_version", "feeds_version", "language"],
+      "properties": {
+        "pipeline_step": { "const": "Yassin_PFE_02_CA_1" },
+        "appraises_version": { "const": "V1" },
+        "feeds_version": { "const": "V2" },
+        "review_type": { "type": "string" },
+        "framework": { "type": "string" },
+        "reporting_standard": { "type": "string" },
+        "language": { "type": "string", "enum": ["English", "French", "Bilingual"] },
+        "note_de_cadrage_available": { "type": "boolean" },
+        "consensus_log_available": { "type": "boolean" },
+        "citation_matrix_available": { "type": "boolean" }
+      },
+      "additionalProperties": true
+    },
+    "scope": {
+      "type": "object",
+      "properties": {
+        "inputs_available": { "type": "array", "items": { "type": "string" } },
+        "limited_dimensions": { "type": "array", "items": { "type": "string" } },
+        "limitation_note": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "global_verdict": {
+      "type": "string",
+      "enum": [
+        "Sound, minor revision only",
+        "Revisable - Major revision required",
+        "Not yet a valid review - Critical revision required",
+        "Provisional - appraisal limited by missing inputs"
+      ]
+    },
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "concern_code",
+          "severity",
+          "location",
+          "finding",
+          "required_action_v2",
+          "needs_new_search"
+        ],
+        "properties": {
+          "id": { "type": "string", "description": "Stable issue id, e.g. CA1-001" },
+          "concern_code": {
+            "type": "string",
+            "enum": [
+              "QUES", "FRAM", "PRISMA", "STRUCT", "SRCH", "TRIA", "ELIG",
+              "CIT", "EXTR", "METHCOMP", "HETERO", "ROB", "SYNTH", "CERT",
+              "INTERP", "GAP", "ORIG", "PFE", "FEAS", "ETH", "CTX", "JTGT"
+            ]
+          },
+          "secondary_codes": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["Critical", "Major", "Minor", "Observation"]
+          },
+          "location": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Anchors: S0x, P00x, P00x-S0y, or table letters T-A..T-I"
+          },
+          "finding": { "type": "string", "description": "What is wrong, with evidence from V1" },
+          "evidence_snippet": { "type": "string" },
+          "required_action_v2": { "type": "string", "description": "Concrete, checkable action V2 must take" },
+          "needs_new_search": { "type": "boolean" },
+          "suggested_query_types": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "reconnaissance", "framework", "existing_review", "recent",
+                "high_specificity", "population", "instrument", "gap",
+                "seminal", "regional", "contradictory", "citation_chaining"
+              ]
+            }
+          },
+          "is_prohibited_shortcut": { "type": "boolean" },
+          "closure_status": {
+            "type": "string",
+            "enum": ["open"],
+            "description": "Always 'open' at CA_1; Review_V2 updates closure in its own handoff"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "handoff_contract": {
+      "type": "object",
+      "required": ["v2_obligations"],
+      "properties": {
+        "v2_obligations": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "must_close_severities": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": ["Critical", "Major"]
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

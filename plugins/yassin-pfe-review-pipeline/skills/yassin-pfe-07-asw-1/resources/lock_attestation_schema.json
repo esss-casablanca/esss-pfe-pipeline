@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Yassin Authorship-Revision Lock Attestation",
+  "description": "Produced by Yassin_PFE_07_ASW_1 (V4) and Yassin_PFE_09_ASW_2 (V5) to attest that the writing revision preserved every frozen element of content_lock.json. Re-checked by the next audit step.",
+  "type": "object",
+  "required": ["produced_version", "lock_ref", "references_preserved", "claims_preserved", "numbers_preserved", "attestation"],
+  "properties": {
+    "produced_version": { "type": "string", "description": "e.g. V4 or V5" },
+    "revises_version": { "type": "string", "description": "e.g. V3 (locked) or V4" },
+    "lock_ref": { "type": "string", "description": "The content_lock.json relied upon" },
+    "references_preserved": {
+      "type": "object",
+      "required": ["expected_count", "found_count", "match"],
+      "properties": {
+        "expected_count": { "type": "integer" },
+        "found_count": { "type": "integer" },
+        "match": { "type": "boolean" },
+        "discrepancies": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": true
+    },
+    "claims_preserved": {
+      "type": "object",
+      "required": ["all_present", "all_unchanged_meaning"],
+      "properties": {
+        "all_present": { "type": "boolean" },
+        "all_unchanged_meaning": { "type": "boolean" },
+        "notes": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "numbers_preserved": {
+      "type": "object",
+      "required": ["statistics_unchanged", "prisma_counts_unchanged", "table_data_unchanged"],
+      "properties": {
+        "statistics_unchanged": { "type": "boolean" },
+        "prisma_counts_unchanged": { "type": "boolean" },
+        "table_data_unchanged": { "type": "boolean" },
+        "notes": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "declined_fixes": {
+      "type": "array",
+      "description": "Writing problems left unfixed because the only fix would touch frozen science.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "location": { "type": "string" },
+          "writing_issue": { "type": "string" },
+          "why_declined": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "attestation": {
+      "type": "string",
+      "enum": ["lock_fully_preserved", "lock_violation_detected"],
+      "description": "If lock_violation_detected, the revision must be corrected before handoff."
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Yassin_PFE_05_Review_V3 Closure Map",
+  "description": "Proves how V2 resolves every Yassin_PFE_02_CA_1 issue. Consumed by Yassin_PFE_04_CA_2 (final rigor verification) rather than re-appraise from scratch.",
+  "type": "object",
+  "required": ["metadata", "searches_run", "closures", "self_quality_gate", "handoff_contract"],
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "required": ["pipeline_step", "produces_version", "consumes", "language"],
+      "properties": {
+        "pipeline_step": { "const": "Yassin_PFE_05_Review_V3" },
+        "produces_version": { "const": "V3" },
+        "consumes": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "e.g. ['V1', 'Yassin_PFE_04_CA_2 issue register']"
+        },
+        "language": { "type": "string", "enum": ["English", "French", "Bilingual"] }
+      },
+      "additionalProperties": true
+    },
+    "searches_run": {
+      "type": "array",
+      "description": "Fresh Consensus searches performed for needs_new_search issues.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "for_issue_ids": { "type": "array", "items": { "type": "string" } },
+          "query_type": {
+            "type": "string",
+            "enum": [
+              "reconnaissance", "framework", "existing_review", "recent",
+              "high_specificity", "population", "instrument", "gap",
+              "seminal", "regional", "contradictory", "citation_chaining"
+            ]
+          },
+          "query": { "type": "string" },
+          "results_note": { "type": "string" },
+          "key_papers": { "type": "array", "items": { "type": "string" } }
+        },
+        "additionalProperties": true
+      }
+    },
+    "closures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["issue_id", "concern_code", "severity", "status", "action_taken"],
+        "properties": {
+          "issue_id": { "type": "string", "description": "The CA_1 issue id, e.g. CA1-001" },
+          "concern_code": { "type": "string" },
+          "severity": { "type": "string", "enum": ["Critical", "Major", "Minor", "Observation"] },
+          "status": {
+            "type": "string",
+            "enum": ["closed", "partially_closed", "cannot_close_yet"]
+          },
+          "action_taken": { "type": "string" },
+          "v2_location": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Where the resolution lives in V2: S0x, P00x, P00x-S0y, T-A..T-I"
+          },
+          "evidence": { "type": "string", "description": "Short proof of what changed in V2" },
+          "new_search_done": { "type": "boolean" },
+          "residual_risk": { "type": "string" },
+          "author_input_required": { "type": "boolean" },
+          "required_author_input": { "type": "string", "description": "What the student must supply (with marker) when status is cannot_close_yet" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "unresolved_markers": {
+      "type": "array",
+      "description": "Markers carried into V2 awaiting student input.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "marker": { "type": "string" },
+          "location": { "type": "string" },
+          "required_input": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "self_quality_gate": {
+      "type": "object",
+      "required": ["all_critical_major_addressed", "no_new_prohibited_shortcut", "production_standards_met"],
+      "properties": {
+        "all_critical_major_addressed": { "type": "boolean" },
+        "no_new_prohibited_shortcut": { "type": "boolean" },
+        "production_standards_met": { "type": "boolean" },
+        "regressions_checked": { "type": "boolean" },
+        "notes": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "summary": {
+      "type": "object",
+      "properties": {
+        "closed": { "type": "integer" },
+        "partially_closed": { "type": "integer" },
+        "cannot_close_yet": { "type": "integer" }
+      },
+      "additionalProperties": true
+    },
+    "handoff_contract": {
+      "type": "object",
+      "required": ["downstream_obligations"],
+      "properties": {
+        "downstream_obligations": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

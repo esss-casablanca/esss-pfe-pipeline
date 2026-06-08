@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Yassin_PFE_06_AI_ARA_1 Audit Register",
+  "description": "Machine-readable authorship-risk audit of the locked V3. Consumed by Yassin_PFE_07_ASW_1 to guide a content-preserving revision. Mirrors the paragraph/sentence/concern-code idiom shared across the pipeline.",
+  "type": "object",
+  "required": ["metadata", "mode", "global_risk", "paragraphs", "final_judgment", "handoff_contract"],
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "required": ["pipeline_step", "audits_version", "feeds_step", "language", "content_lock_ref"],
+      "properties": {
+        "pipeline_step": { "const": "Yassin_PFE_08_AI_ARA_2" },
+        "audits_version": { "const": "V4" },
+        "feeds_step": { "const": "Yassin_PFE_09_ASW_2" },
+        "language": { "type": "string", "enum": ["English", "French", "Bilingual"] },
+        "content_lock_ref": { "type": "string", "description": "Reference to the content_lock.json this audit respects" }
+      },
+      "additionalProperties": true
+    },
+    "mode": { "type": "string", "enum": ["A", "B", "C"] },
+    "external_reports": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "tool": { "type": "string" },
+          "date": { "type": "string" },
+          "overall_score_or_category": { "type": "string" },
+          "highlighted_passages": { "type": "array", "items": { "type": "string" } }
+        },
+        "additionalProperties": true
+      }
+    },
+    "global_risk": {
+      "type": "string",
+      "enum": ["Low", "Low-moderate", "Moderate", "Moderate-high", "High", "Inconclusive"]
+    },
+    "section_assessments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "section_id": { "type": "string" },
+          "section_name": { "type": "string" },
+          "note": { "type": "string" },
+          "standardised_section": { "type": "boolean" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "paragraphs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["paragraph_id", "section", "score", "confidence", "main_concern_code", "recommended_action"],
+        "properties": {
+          "paragraph_id": { "type": "string" },
+          "section": { "type": "string" },
+          "score": { "type": "integer", "minimum": 0, "maximum": 5 },
+          "confidence": { "type": "string", "enum": ["low", "medium", "high"] },
+          "main_concern_code": { "type": "string" },
+          "evidence_snippet": { "type": "string" },
+          "false_positive_caution": { "type": "string" },
+          "recommended_action": { "type": "string", "description": "Coached, editable-scope-only action" },
+          "sentence_findings": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "sentence_id": { "type": "string" },
+                "codes": {
+                  "type": "array",
+                  "items": { "type": "string", "enum": ["GEN", "POL", "UNS", "VAG", "REP", "CIT", "DAT", "MET", "TER", "TRN", "PAR", "STD"] }
+                },
+                "note": { "type": "string" }
+              },
+              "additionalProperties": true
+            }
+          },
+          "author_verification_requested": { "type": "boolean" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "author_verification_checklist": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "final_judgment": {
+      "type": "string",
+      "enum": [
+        "Acceptable authorship profile",
+        "Acceptable with minor revision",
+        "Moderate authorship-risk profile; revision and author verification recommended",
+        "High authorship-risk profile; detailed author verification required",
+        "Inconclusive; external reports, drafting history, or author interview required"
+      ]
+    },
+    "handoff_contract": {
+      "type": "object",
+      "required": ["asw_obligations"],
+      "properties": {
+        "asw_obligations": { "type": "array", "items": { "type": "string" } },
+        "lock_preservation_required": { "type": "boolean", "default": true }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

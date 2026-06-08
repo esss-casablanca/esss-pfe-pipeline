@@ -1,0 +1,273 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Yassin Scholarly Authorship Revision V2 Output Schema",
+  "type": "object",
+  "required": [
+    "metadata",
+    "mode",
+    "revision_scope",
+    "revised_text",
+    "revision_log",
+    "claim_traceability",
+    "unresolved_markers",
+    "submission_readiness",
+    "integrity_statement"
+  ],
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "language": {
+          "type": "string",
+          "enum": [
+            "French",
+            "English",
+            "Bilingual",
+            "Unknown"
+          ]
+        },
+        "document_type": {
+          "type": "string"
+        },
+        "health_science_field": {
+          "type": "string"
+        },
+        "target_audience": {
+          "type": "string"
+        },
+        "reporting_guideline_family": {
+          "type": "string"
+        },
+        "confidentiality_risk": {
+          "type": "string",
+          "enum": [
+            "None detected",
+            "Possible",
+            "Confirmed",
+            "Unresolved"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ]
+    },
+    "revision_scope": {
+      "type": "string"
+    },
+    "skill1_inputs_used": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source_paragraph_id": {
+            "type": "string"
+          },
+          "source_sentence_id": {
+            "type": "string"
+          },
+          "skill1_risk_score": {
+            "type": [
+              "number",
+              "string"
+            ]
+          },
+          "skill1_concern_codes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "false_positive_caution": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "revised_text": {
+      "type": "string"
+    },
+    "revision_log": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "original_issue",
+          "action_taken",
+          "rationale"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "source_paragraph_id": {
+            "type": "string"
+          },
+          "source_sentence_id": {
+            "type": "string"
+          },
+          "original_issue": {
+            "type": "string"
+          },
+          "action_taken": {
+            "type": "string"
+          },
+          "rationale": {
+            "type": "string"
+          },
+          "source_status": {
+            "type": "string"
+          },
+          "meaning_drift_risk": {
+            "type": "string",
+            "enum": [
+              "None",
+              "Low",
+              "Moderate",
+              "High"
+            ]
+          },
+          "author_verification_required": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "claim_traceability": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "claim",
+          "change_type",
+          "support_status"
+        ],
+        "properties": {
+          "claim": {
+            "type": "string"
+          },
+          "change_type": {
+            "type": "string",
+            "enum": [
+              "Added",
+              "Modified",
+              "Removed",
+              "Preserved",
+              "Narrowed"
+            ]
+          },
+          "support_status": {
+            "type": "string"
+          },
+          "marker": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "unresolved_markers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "marker": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "required_input": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "author_checklist": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "meaning_preservation": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "Preserved",
+            "Mostly preserved",
+            "Not preserved",
+            "Cannot determine"
+          ]
+        },
+        "risk": {
+          "type": "string",
+          "enum": [
+            "None",
+            "Low",
+            "Moderate",
+            "High"
+          ]
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "reporting_alignment": {
+      "type": "object",
+      "properties": {
+        "guideline_family": {
+          "type": "string"
+        },
+        "items_addressed": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "missing_items": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "markers_added": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "submission_readiness": {
+      "type": "string",
+      "enum": [
+        "Ready",
+        "Ready after author verification",
+        "Not ready"
+      ]
+    },
+    "integrity_statement": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

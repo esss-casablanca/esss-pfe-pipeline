@@ -1,0 +1,200 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Yassin PFE Student & Project Profile (v2 — supervisor amendments R1-R10)",
+  "description": "Created at the student's first pipeline step and read by every later step. Lives in the Cowork project workspace. v2 adds the second supervisor, ESSS department, the fixed four-author byline, and systematic review types.",
+  "type": "object",
+  "required": [
+    "student",
+    "project",
+    "interaction_language",
+    "created_at_step"
+  ],
+  "properties": {
+    "student": {
+      "type": "object",
+      "required": [
+        "first_name",
+        "family_name",
+        "filiere",
+        "department"
+      ],
+      "properties": {
+        "first_name": {
+          "type": "string"
+        },
+        "family_name": {
+          "type": "string"
+        },
+        "filiere": {
+          "type": "string"
+        },
+        "academic_year": {
+          "type": "string"
+        },
+        "promotion": {
+          "type": "string"
+        },
+        "encadrant_academique": {
+          "type": "string",
+          "description": "3rd author"
+        },
+        "encadrant_professionnel": {
+          "type": "string",
+          "description": "4th author (terrain de stage)"
+        },
+        "encadrant": {
+          "type": "string",
+          "description": "Deprecated alias for encadrant_academique; kept for back-compat"
+        },
+        "department": {
+          "type": "string",
+          "description": "ESSS department for the author affiliation (R10).",
+          "enum": [
+            "Department of Nursing Sciences",
+            "Department of Midwifery and Women Health",
+            "Department of Physical Therapy",
+            "Department of Psychomotricity",
+            "Department of Speech-Language Pathology",
+            "Department of Audiology and Hearing Technology",
+            "Department of Dietetics and Nutrition",
+            "Department of Medical Imaging",
+            "Department of Medical Laboratory Technology",
+            "Department of Public Health",
+            "Department of Education of Health Professions"
+          ]
+        },
+        "affiliation": {
+          "type": "string",
+          "description": "e.g. Department of Nursing Sciences, College of Health Sciences, Casablanca, Morocco"
+        },
+        "email": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "authorship": {
+      "type": "object",
+      "description": "Fixed byline (R3) rendered names-only (R10).",
+      "required": [
+        "authors"
+      ],
+      "properties": {
+        "order_rule": {
+          "type": "string",
+          "default": "1) student, 2) Khaled Yassin, 3) encadrant academique, 4) encadrant professionnel"
+        },
+        "byline_names_only": {
+          "type": "boolean",
+          "default": true
+        },
+        "authors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "name",
+              "affiliation"
+            ],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "affiliation": {
+                "type": "string"
+              },
+              "corresponding": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": true
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "project": {
+      "type": "object",
+      "required": [
+        "code",
+        "exact_title"
+      ],
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "exact_title": {
+          "type": "string"
+        },
+        "review_type": {
+          "type": "string",
+          "description": "Forced to a systematic synthesis (R5).",
+          "enum": [
+            "systematic review",
+            "mixed-methods systematic review",
+            "observational systematic review",
+            "systematic review of prevalence",
+            "diagnostic test accuracy systematic review",
+            "meta-analysis"
+          ]
+        },
+        "review_type_note_de_cadrage": {
+          "type": "string",
+          "description": "What the note de cadrage literally said (may be scoping)."
+        },
+        "review_type_override_rationale": {
+          "type": "string",
+          "description": "One-line rationale when R5 upgrades the note's stated type."
+        },
+        "review_question": {
+          "type": "string"
+        },
+        "population_context": {
+          "type": "string"
+        },
+        "note_de_cadrage_filename": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "interaction_language": {
+      "type": "string",
+      "enum": [
+        "Français",
+        "English",
+        "العربية"
+      ]
+    },
+    "deliverable_language_policy": {
+      "type": "string",
+      "default": "English-primary; French companion on request; Arabic never a deliverable language"
+    },
+    "created_at_step": {
+      "type": "string",
+      "description": "e.g. Yassin_PFE_01_Review_V1"
+    },
+    "pipeline_progress": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "step": {
+            "type": "string"
+          },
+          "completed_at": {
+            "type": "string"
+          },
+          "artifacts": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}
