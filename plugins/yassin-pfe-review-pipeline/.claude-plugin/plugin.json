@@ -1,0 +1,9 @@
+{
+  "name": "yassin-pfe-review-pipeline",
+  "displayName": "Yassin ESSS PFE Review-Article Pipeline",
+  "version": "1.0.0",
+  "description": "Ten-step, filiere-agnostic ESSS PFE pipeline that takes any student from a note de cadrage to a publication-ready systematic review and journal-submission packs: V1 draft, two critical-appraisal passes, V3 science lock, an AI-authorship audit and revision loop (V4/V5), and live-search journal selection. Forces a systematic review, deep Consensus search, a standalone publishable article, and a fixed four-author byline.",
+  "author": { "name": "Dr Khaled Yassin", "email": "kyassin174@gmail.com" },
+  "license": "Proprietary",
+  "keywords": ["ESSS", "PFE", "systematic-review", "nursing", "health-sciences", "research", "cowork"]
+}
