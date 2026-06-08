@@ -1,0 +1,11 @@
+{
+  "name": "yassin-esss-pfe",
+  "owner": { "name": "Dr Khaled Yassin", "email": "kyassin174@gmail.com" },
+  "plugins": [
+    {
+      "name": "yassin-pfe-review-pipeline",
+      "source": "./plugins/yassin-pfe-review-pipeline",
+      "description": "Ten-step ESSS PFE systematic-review pipeline (V1 to V5 plus journal-submission packs). Filiere- and subject-agnostic."
+    }
+  ]
+}
